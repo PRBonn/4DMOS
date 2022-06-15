@@ -5,14 +5,18 @@
 [![Paper](https://img.shields.io/badge/paper-get-<COLOR>.svg?style=flat-square)](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/mersch2022ral.pdf)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://lbesson.mit-license.org/)
 
+![example](docs/4dmos.gif)
+*Our moving object segmentation on the unseen SemanticKITTI test sequences 18 and 21. Red points are predicted as moving.*
+
 ## Table of Contents
 1. [Publication](#publication)
-2. [Data](#data)
-3. [Installation](#installation)
-4. [Running the Code](#running-the-code)
-5. [Evaluation and Visualization](#evaluation-and-visualization)
-6. [Pretrained Model](#pretrained-models)
-7. [License](#license)
+2. [Overview](#overview)
+3. [Data](#data)
+4. [Installation](#installation)
+5. [Running the Code](#running-the-code)
+6. [Evaluation and Visualization](#evaluation-and-visualization)
+7. [Pretrained Model](#pretrained-models)
+8. [License](#license)
 
 ## Publication
 If you use our code in your academic work, please cite the corresponding [paper](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/mersch2022ral.pdf):
@@ -25,6 +29,20 @@ journal={IEEE Robotics and Automation Letters (RA-L)},
 year = 2022,
 }
 ```
+
+## Overview
+
+<p align="center">
+    <img src="docs/introduction.png" width="600">
+</p>
+
+*Given a sequence of point clouds, our method segments moving (red) from non-moving (black) points.*
+
+<p align="center">
+    <img src="docs/architecture.png">
+</p>
+
+*We first create a sparse 4D point cloud of all points in a given receding window. We use sparse 4D convolutions from the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) to extract spatio-temporal features and predict per-points moving object scores.*
 
 ## Data
 Download the SemanticKITTI data from the official [website](http://www.semantic-kitti.org/dataset.html#download).
@@ -152,7 +170,9 @@ You can use the ```--strategy``` argument to decide between the non-overlapping 
 We use the [SemanticKITTI API](https://github.com/PRBonn/semantic-kitti-api) to evaluate the intersection-over-union (IOU) of the moving class as well as to visualize the predictions.
 
 ## Pretrained Models
-Find the pretrained models from Table III in our paper below:
+<p align="center">
+    <img src="docs/table.png" width="600">
+</p>
 
 * [Model [A]: 5 scans @ 0.1s](https://www.ipb.uni-bonn.de/html/projects/4DMOS/5_scans.zip)
 * [Model [B]: 5 scans @ 0.2s](https://www.ipb.uni-bonn.de/html/projects/4DMOS/5_scans_dt_0p2.zip)
