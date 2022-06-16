@@ -65,6 +65,10 @@ Download the SemanticKITTI data from the official [website](http://www.semantic-
 ```
 
 ## Installation
+Clone this repository in your workspace with
+```
+git clone https://github.com/PRBonn/4DMOS
+```
 
 ### With Docker
 We provide a ```Dockerfile``` and a ```docker-compose.yaml``` to run all docker commands with a simple ```Makefile```.
