@@ -127,8 +127,6 @@ You can now work inside the container and run the training and inference scripts
 Without Docker, you need to install the dependencies specified in the ```setup.py```. This can be done in editable mode by running
 
 ```bash
-git clone git@github.com:benemer/4DMOS.git
-cd 4DMOS
 python3 -m pip install --editable .
 ```
 
