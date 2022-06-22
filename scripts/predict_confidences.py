@@ -74,7 +74,7 @@ def main(weights, sequence, dt, poses, transform):
     model = models.MOSNet.load_from_checkpoint(weights, hparams=cfg)
 
     # Setup trainer
-    trainer = Trainer(gpus=cfg["TRAIN"]["N_GPUS"], logger=False)
+    trainer = Trainer(gpus=1, logger=False)
 
     # Infer!
     trainer.predict(model, data.test_dataloader())

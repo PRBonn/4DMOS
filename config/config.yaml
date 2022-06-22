@@ -39,7 +39,6 @@ DATA:
  
 ##Training
 TRAIN:
-  N_GPUS: 1
   MAX_EPOCH: 60
   LR: 0.0001
   LR_EPOCH: 1

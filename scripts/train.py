@@ -72,7 +72,7 @@ def main(config, weights, checkpoint):
 
     # Setup trainer
     trainer = Trainer(
-        gpus=cfg["TRAIN"]["N_GPUS"],
+        gpus=1,
         logger=tb_logger,
         max_epochs=cfg["TRAIN"]["MAX_EPOCH"],
         accumulate_grad_batches=cfg["TRAIN"]["ACC_BATCHES"],

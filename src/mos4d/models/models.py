@@ -206,8 +206,7 @@ class MOSModel(nn.Module):
         self.MinkUNet = CustomMinkUNet(in_channels=1, out_channels=n_classes, D=4)
 
     def forward(self, past_point_clouds):
-        device = past_point_clouds[0].device
-        quantization = self.quantization.to(device)
+        quantization = self.quantization.type_as(past_point_clouds[0])
 
         past_point_clouds = [
             torch.div(point_cloud, quantization) for point_cloud in past_point_clouds
@@ -218,7 +217,7 @@ class MOSModel(nn.Module):
         ]
         coords, features = ME.utils.sparse_collate(past_point_clouds, features)
         tensor_field = ME.TensorField(
-            features=features, coordinates=coords.to(features.device)
+            features=features, coordinates=coords.type_as(features)
         )
 
         sparse_tensor = tensor_field.sparse()
