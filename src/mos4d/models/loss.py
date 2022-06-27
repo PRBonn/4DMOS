@@ -15,7 +15,9 @@ class MOSLoss(nn.Module):
         self.n_classes = n_classes
         self.ignore_index = ignore_index
         self.softmax = nn.Softmax(dim=1)
-        self.loss = nn.NLLLoss()
+        weight = [0.0 if i in ignore_index else 1.0 for i in range(n_classes)]
+        weight = torch.Tensor([w / sum(weight) for w in weight])
+        self.loss = nn.NLLLoss(weight=weight)
 
     def compute_loss(self, out: ME.TensorField, past_labels: list):
         # Get raw point wise scores
@@ -29,6 +31,6 @@ class MOSLoss(nn.Module):
 
         # Prepare ground truth labels
         gt_labels = torch.cat(past_labels, dim=0)[:, 0]
-        gt_labels = gt_labels.long()
-        loss = self.loss(log_softmax, gt_labels)
+
+        loss = self.loss(log_softmax, gt_labels.long())
         return loss
