@@ -15,8 +15,9 @@
 4. [Installation](#installation)
 5. [Running the Code](#running-the-code)
 6. [Evaluation and Visualization](#evaluation-and-visualization)
-7. [Pretrained Model](#pretrained-models)
-8. [License](#license)
+7. [Benchmark](#benchmark)
+8. [Pretrained Model](#pretrained-models)
+9. [License](#license)
 
 ## Publication
 If you use our code in your academic work, please cite the corresponding [paper](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/mersch2022ral.pdf):
@@ -175,6 +176,9 @@ We use the [SemanticKITTI API](https://github.com/PRBonn/semantic-kitti-api) to 
 cd semantic-kitti-api
 ./visualize_mos.py --sequence 8 --dataset /mnt/data/kitti-odometry/dataset --predictions /path/to/4DMOS/predictions/ID/POSES/labels/STRATEGY/
 ```
+
+## Benchmark
+To submit the results to the LiDAR-MOS benchmark, please follow the instructions [here](https://competitions.codalab.org/competitions/28894).
 
 ## Pretrained Models
 <p align="center">
