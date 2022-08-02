@@ -169,7 +169,12 @@ python scripts/confidences_to_labels.py -p predictions/ID/POSES
 You can use the ```--strategy``` argument to decide between the non-overlapping or bayesian filter strategy from the paper. Run with ```--help``` to see more options. The final predictions are stored in ```predictions/ID/POSES/labels/```.
 
 ## Evaluation and Visualization
-We use the [SemanticKITTI API](https://github.com/PRBonn/semantic-kitti-api) to evaluate the intersection-over-union (IOU) of the moving class as well as to visualize the predictions.
+We use the [SemanticKITTI API](https://github.com/PRBonn/semantic-kitti-api) to evaluate the intersection-over-union (IOU) of the moving class as well as to visualize the predictions. Clone the repository in your workspace, install the dependencies and then run the following command to visualize your predictions for e.g. sequence 8:
+
+```
+cd semantic-kitti-api
+./visualize_mos.py --sequence 8 --dataset /mnt/data/kitti-odometry/dataset --predictions /path/to/4DMOS/predictions/ID/POSES/labels/STRATEGY/
+```
 
 ## Pretrained Models
 <p align="center">
