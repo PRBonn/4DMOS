@@ -174,7 +174,7 @@ We use the [SemanticKITTI API](https://github.com/PRBonn/semantic-kitti-api) to 
 
 ```
 cd semantic-kitti-api
-./visualize_mos.py --sequence 8 --dataset /mnt/data/kitti-odometry/dataset --predictions /path/to/4DMOS/predictions/ID/POSES/labels/STRATEGY/
+./visualize_mos.py --sequence 8 --dataset /path/to/dataset --predictions /path/to/4DMOS/predictions/ID/POSES/labels/STRATEGY/
 ```
 
 ## Benchmark
