@@ -135,7 +135,7 @@ Without Docker, you need to install the dependencies specified in the ```setup.p
 python3 -m pip install --editable .
 ```
 
-When installing the MinkowskiEngine, your CUDA version has to match the CUDA version that was used to compile PyTorch. If you run into problems installing the MinkowskiEngine, please have a look at the original [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) repo and their [installation wiki page](https://github.com/NVIDIA/MinkowskiEngine/wiki/Installation).
+Now install the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) according to their [installation wiki page](https://github.com/NVIDIA/MinkowskiEngine/wiki/Installation). When installing the MinkowskiEngine, your CUDA version has to match the CUDA version that was used to compile PyTorch.
 
 ## Running the Code
 If not done yet, specify the path to the SemanticKITTI data:
