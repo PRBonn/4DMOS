@@ -226,9 +226,7 @@ class KittiSequentialDataset(Dataset):
 
         # Load past labels
         label_files = [
-            os.path.join(
-                self.root_dir, str(seq).zfill(2), "labels", str(i).zfill(6) + ".label"
-            )
+            os.path.join(self.root_dir, str(seq).zfill(2), "labels", str(i).zfill(6) + ".label")
             for i in past_indices
         ]
 
@@ -240,9 +238,7 @@ class KittiSequentialDataset(Dataset):
         past_labels = torch.cat(list_past_labels, dim=0)
 
         if self.augment:
-            past_point_clouds, past_labels = self.augment_data(
-                past_point_clouds, past_labels
-            )
+            past_point_clouds, past_labels = self.augment_data(past_point_clouds, past_labels)
 
         meta = (seq, scan_idx, past_indices)
         return [meta, past_point_clouds, past_labels]

@@ -12,10 +12,8 @@ setup(
         "numpy>=1.20.3",
         "pytorch_lightning>=1.6.4",
         "PyYAML>=6.0",
-        "setuptools>=45.2.0",
         "tqdm>=4.62.3",
         "torch",
         "ninja",
-        "MinkowskiEngine",
     ],
 )

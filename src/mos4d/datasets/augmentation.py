@@ -17,9 +17,7 @@ def rotate_point_cloud(point_cloud):
     rotation_angle = np.random.uniform() * 2 * torch.pi
     cosval = np.cos(rotation_angle)
     sinval = np.sin(rotation_angle)
-    rotation_matrix = torch.Tensor(
-        [[cosval, -sinval, 0], [sinval, cosval, 0], [0, 0, 1]]
-    )
+    rotation_matrix = torch.Tensor([[cosval, -sinval, 0], [sinval, cosval, 0], [0, 0, 1]])
     point_cloud[:, :3] = point_cloud[:, :3] @ rotation_matrix
     return point_cloud
 
