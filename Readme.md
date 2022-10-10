@@ -78,11 +78,13 @@ We provide a ```Dockerfile``` and a ```docker-compose.yaml``` to run all docker 
 
 To use it, you need to
 1. [Install Docker](https://docs.docker.com/desktop/linux/install/)
-2. Install docker-compose with
+2. In Ubuntu, install docker-compose with
 
     ```bash
     sudo apt-get install docker-compose
     ```
+    
+    Note that this will install docker-compose v1.25 which is recommended since GPU access during build time using docker-compose v2 is currently an [open issue](https://github.com/docker/compose/issues/9681).
 
 3. Install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
 4. **IMPORTANT** To have GPU access during the build stage, make ```nvidia``` the default runtime in ```/etc/docker/daemon.json```:
