@@ -36,9 +36,7 @@ import mos4d.models.models as models
     help="Desired temporal resolution of predictions.",
     default=None,
 )
-@click.option(
-    "--poses", "-poses", type=str, default=None, help="Specify which poses to use."
-)
+@click.option("--poses", "-poses", type=str, default=None, help="Specify which poses to use.")
 @click.option(
     "--transform",
     "-transform",

@@ -83,9 +83,7 @@ def main(path, strategy, sequence, prior, dt):
 
                 # Consider prediction if done with desired temporal resolution
                 pred_idx = predicted_confidence.split("_")[0]
-                temporal_resolution = float(
-                    predicted_confidence.split("_")[-1].split(".")[0]
-                )
+                temporal_resolution = float(predicted_confidence.split("_")[-1].split(".")[0])
                 if temporal_resolution == dt:
                     if pred_idx not in dict_confidences:
                         dict_confidences[pred_idx] = [path_to_confidence]

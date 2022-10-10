@@ -36,22 +36,16 @@ class MOSNet(LightningModule):
         self.weight_decay = hparams["TRAIN"]["WEIGHT_DECAY"]
         self.n_past_steps = hparams["MODEL"]["N_PAST_STEPS"]
 
-        self.semantic_config = yaml.safe_load(
-            open(hparams["DATA"]["SEMANTIC_CONFIG_FILE"])
-        )
+        self.semantic_config = yaml.safe_load(open(hparams["DATA"]["SEMANTIC_CONFIG_FILE"]))
         self.n_classes = len(self.semantic_config["learning_map_inv"])
         self.ignore_index = [
-            key
-            for key, ignore in self.semantic_config["learning_ignore"].items()
-            if ignore
+            key for key, ignore in self.semantic_config["learning_ignore"].items() if ignore
         ]
         self.model = MOSModel(hparams, self.n_classes)
 
         self.MOSLoss = MOSLoss(self.n_classes, self.ignore_index)
 
-        self.ClassificationMetrics = ClassificationMetrics(
-            self.n_classes, self.ignore_index
-        )
+        self.ClassificationMetrics = ClassificationMetrics(self.n_classes, self.ignore_index)
 
     def getLoss(self, out: ME.TensorField, past_labels: list):
         loss = self.MOSLoss.compute_loss(out, past_labels)
@@ -86,9 +80,7 @@ class MOSNet(LightningModule):
         for s in range(self.n_past_steps):
             agg_confusion_matrix = torch.zeros(self.n_classes, self.n_classes)
             for dict_confusion_matrix in list_dict_confusion_matrix:
-                agg_confusion_matrix = agg_confusion_matrix.add(
-                    dict_confusion_matrix[s]
-                )
+                agg_confusion_matrix = agg_confusion_matrix.add(dict_confusion_matrix[s])
             iou = self.ClassificationMetrics.getIoU(agg_confusion_matrix)
             self.log("train_moving_iou_step{}".format(s), iou[2].item())
 
@@ -101,9 +93,7 @@ class MOSNet(LightningModule):
         out = self.forward(past_point_clouds)
 
         loss = self.getLoss(out, past_labels)
-        self.log(
-            "val_loss", loss.item(), batch_size=batch_size, prog_bar=True, on_epoch=True
-        )
+        self.log("val_loss", loss.item(), batch_size=batch_size, prog_bar=True, on_epoch=True)
 
         dict_confusion_matrix = {}
         for s in range(self.n_past_steps):
@@ -118,9 +108,7 @@ class MOSNet(LightningModule):
         for s in range(self.n_past_steps):
             agg_confusion_matrix = torch.zeros(self.n_classes, self.n_classes)
             for dict_confusion_matrix in validation_step_outputs:
-                agg_confusion_matrix = agg_confusion_matrix.add(
-                    dict_confusion_matrix[s]
-                )
+                agg_confusion_matrix = agg_confusion_matrix.add(dict_confusion_matrix[s])
             iou = self.ClassificationMetrics.getIoU(agg_confusion_matrix)
             self.log("val_moving_iou_step{}".format(s), iou[2].item())
 
@@ -183,9 +171,7 @@ class MOSNet(LightningModule):
         return confusion_matrix
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(
-            self.parameters(), lr=self.lr, weight_decay=self.weight_decay
-        )
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
         scheduler = torch.optim.lr_scheduler.StepLR(
             optimizer, step_size=self.lr_epoch, gamma=self.lr_decay
         )
@@ -216,9 +202,7 @@ class MOSModel(nn.Module):
             for point_cloud in past_point_clouds
         ]
         coords, features = ME.utils.sparse_collate(past_point_clouds, features)
-        tensor_field = ME.TensorField(
-            features=features, coordinates=coords.type_as(features)
-        )
+        tensor_field = ME.TensorField(features=features, coordinates=coords.type_as(features))
 
         sparse_tensor = tensor_field.sparse()
 
