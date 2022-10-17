@@ -28,6 +28,9 @@ author = {B. Mersch and X. Chen and I. Vizzo and L. Nunes and J. Behley and C. S
 title = {{Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions}},
 journal={IEEE Robotics and Automation Letters (RA-L)},
 year = 2022,
+volume = {7},
+number = {3},
+pages = {7503--7510},
 }
 ```
 
