@@ -20,7 +20,7 @@
 9. [License](#license)
 
 ## Publication
-If you use our code in your academic work, please cite the corresponding [paper](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/mersch2022ral.pdf):
+If you use our code in your academic work, please cite the corresponding [paper](http://www.ipb.uni-bonn.de/pdfs/mersch2022ral.pdf):
     
 ```latex
 @article{mersch2022ral,
