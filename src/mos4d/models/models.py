@@ -11,7 +11,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
-from pytorch_lightning.core.lightning import LightningModule
+from pytorch_lightning import LightningModule
 import MinkowskiEngine as ME
 
 from mos4d.models.MinkowskiEngine.customminkunet import CustomMinkUNet

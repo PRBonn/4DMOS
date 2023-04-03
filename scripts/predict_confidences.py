@@ -69,7 +69,12 @@ def main(weights, sequence, dt, poses, transform):
     data = datasets.KittiSequentialModule(cfg)
     data.setup()
 
-    model = models.MOSNet.load_from_checkpoint(weights, hparams=cfg)
+    ckpt = torch.load(weights)
+    model = models.MOSNet(cfg)
+    model.load_state_dict(ckpt["state_dict"])
+    model = model.cuda()
+    model.eval()
+    model.freeze()
 
     # Setup trainer
     trainer = Trainer(gpus=1, logger=False)
