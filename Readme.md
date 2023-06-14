@@ -1,7 +1,7 @@
 # Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions
-[![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)](src/vdbfusion/pybind)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/PRBonn/vdbfusion/pulls)
+[![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)](https://github.com/PRBonn/4DMOS#running-the-code)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](https://github.com/PRBonn/4DMOS#installation)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/PRBonn/4DMOS/pulls)
 [![Paper](https://img.shields.io/badge/paper-get-<COLOR>.svg?style=flat-square)](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/mersch2022ral.pdf)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://lbesson.mit-license.org/)
 
