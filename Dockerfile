@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-devel
+FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel
 
 ENV PROJECT=/mos4d
 RUN mkdir -p $PROJECT
@@ -21,7 +21,7 @@ RUN rm -rf $PROJECT
 
 RUN pip install -U git+https://github.com/NVIDIA/MinkowskiEngine -v --no-deps \
                            --install-option="--force_cuda" \
-                           --install-option="--cuda_home=/usr/local/cuda-11.3" \
+                           --install-option="--cuda_home=/usr/local/cuda-11.7" \
                            --install-option="--blas=openblas"
 
 

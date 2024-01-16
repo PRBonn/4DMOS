@@ -55,7 +55,6 @@ class ResNetBase(nn.Module):
         self.weight_initialization()
 
     def network_initialization(self, in_channels, out_channels, D):
-
         self.inplanes = self.INIT_DIM
         self.conv1 = nn.Sequential(
             ME.MinkowskiConvolution(

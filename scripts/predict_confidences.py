@@ -77,7 +77,7 @@ def main(weights, sequence, dt, poses, transform):
     model.freeze()
 
     # Setup trainer
-    trainer = Trainer(gpus=1, logger=False)
+    trainer = Trainer(accelerator="gpu", devices=1, logger=False)
 
     # Infer!
     trainer.predict(model, data.test_dataloader())
