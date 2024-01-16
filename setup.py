@@ -15,5 +15,6 @@ setup(
         "tqdm>=4.62.3",
         "torch",
         "ninja",
+        "requests<2.11.1", # Needed as long as docker-compose is used
     ],
 )
