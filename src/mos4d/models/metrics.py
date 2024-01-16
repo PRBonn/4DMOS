@@ -15,7 +15,6 @@ class ClassificationMetrics(nn.Module):
         self.ignore_index = ignore_index
 
     def compute_confusion_matrix(self, pred_logits: torch.Tensor, gt_labels: torch.Tensor):
-
         # Set ignored classes to -inf to not influence softmax
         pred_logits[:, self.ignore_index] = -float("inf")
 

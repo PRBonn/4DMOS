@@ -39,7 +39,6 @@ import mos4d.models.models as models
     default=None,
 )
 def main(config, weights, checkpoint):
-
     if checkpoint:
         cfg = torch.load(checkpoint)["hyper_parameters"]
     else:

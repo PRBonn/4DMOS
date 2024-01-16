@@ -212,7 +212,6 @@ class KittiSequentialDataset(Dataset):
         past_files = self.filenames[seq][from_idx : to_idx : self.skip]
         list_past_point_clouds = [self.read_point_cloud(f) for f in past_files]
         for i, pcd in enumerate(list_past_point_clouds):
-
             # Transform to current viewpoint
             if self.transform:
                 from_pose = self.poses[seq][past_indices[i]]
