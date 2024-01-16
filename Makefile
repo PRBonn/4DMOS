@@ -3,22 +3,22 @@ export GROUP_ID:=$(shell id -g)
 
 build:
 	@echo Build docker image...
-	@docker-compose build project
+	@docker compose build project
 
 test: check-env
 	@echo NVIDIA and CUDA setup
-	@docker-compose run project nvidia-smi
+	@docker compose run project nvidia-smi
 	@echo Pytorch CUDA setup installed?
-	@docker-compose run project python3 -c "import torch; print(torch.cuda.is_available())"
+	@docker compose run project python3 -c "import torch; print(torch.cuda.is_available())"
 	@echo MinkowskiEngine installed?
-	@docker-compose run project python3 -c "import MinkowskiEngine as ME; print(ME.__version__)"
+	@docker compose run project python3 -c "import MinkowskiEngine as ME; print(ME.__version__)"
 
 run: check-env
-	@docker-compose run project
+	@docker compose run project
 
 clean:
 	@echo Removing docker image...
-	@docker-compose rm project
+	@docker compose rm project
 
 
 check-env:
