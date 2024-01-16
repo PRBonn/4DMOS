@@ -167,8 +167,8 @@ class MOSNet(LightningModule):
         t = round(-step * self.dt_prediction, 3)
         mask = out.coordinates[:, -1].isclose(torch.tensor(t))
         pred_logits = out.features[mask].detach().cpu()
-        gt_labels = torch.cat(past_labels, dim=0).detach().cpu()
-        gt_labels = gt_labels[mask][:, 0]
+        gt_labels = torch.cat(past_labels, dim=0)
+        gt_labels = gt_labels[mask][:, 0].detach().cpu()
         confusion_matrix = self.ClassificationMetrics.compute_confusion_matrix(
             pred_logits, gt_labels
         )
