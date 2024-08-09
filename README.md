@@ -1,193 +1,110 @@
-# Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions
-[![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)](https://github.com/PRBonn/4DMOS#running-the-code)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](https://github.com/PRBonn/4DMOS#installation)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/PRBonn/4DMOS/pulls)
-[![Paper](https://img.shields.io/badge/paper-get-<COLOR>.svg?style=flat-square)](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/mersch2022ral.pdf)
-[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://lbesson.mit-license.org/)
+<div align="center">
+  <h1>Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions</h1>
+  <a href="https://github.com/PRBonn/4DMOS#how-to-use-it"><img src="https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54" /></a>
+    <a href="https://github.com/PRBonn/4DMOS#installation"><img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black" /></a>
+    <a href="https://www.ipb.uni-bonn.de/pdfs/mersch2022ral.pdf"><img src="https://img.shields.io/badge/Paper-pdf-<COLOR>.svg?style=flat-square" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" /></a>
+</div>
 
 ![example](docs/4dmos.gif)
 *Our moving object segmentation on the unseen SemanticKITTI test sequences 18 and 21. Red points are predicted as moving.*
 
-## Table of Contents
-1. [Publication](#publication)
-2. [Overview](#overview)
-3. [Data](#data)
-4. [Installation](#installation)
-5. [Running the Code](#running-the-code)
-6. [Evaluation and Visualization](#evaluation-and-visualization)
-7. [Benchmark](#benchmark)
-8. [Pretrained Model](#pretrained-models)
-9. [License](#license)
-
-## Publication
-If you use our code in your academic work, please cite the corresponding [paper](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/mersch2022ral.pdf):
-    
-```latex
-@article{mersch2022ral,
-author = {B. Mersch and X. Chen and I. Vizzo and L. Nunes and J. Behley and C. Stachniss},
-title = {{Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions}},
-journal={IEEE Robotics and Automation Letters (RA-L)},
-year = 2022,
-volume = {7},
-number = {3},
-pages = {7503--7510},
-}
-```
-
-Please find the corresponding video [here](https://youtu.be/5aWew6caPNQ).
-
-## Overview
-
-<p align="center">
-    <img src="docs/introduction.png" width="600">
-</p>
-
-*Given a sequence of point clouds, our method segments moving (red) from non-moving (black) points.*
-
-<p align="center">
-    <img src="docs/architecture.png">
-</p>
-
-*We first create a sparse 4D point cloud of all points in a given receding window. We use sparse 4D convolutions from the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) to extract spatio-temporal features and predict per-points moving object scores.*
-
-## Data
-Download the SemanticKITTI data from the official [website](http://www.semantic-kitti.org/dataset.html#download).
-```
-./
-└── sequences
-  ├── 00/           
-  │   ├── velodyne/	
-  |   |	├── 000000.bin
-  |   |	├── 000001.bin
-  |   |	└── ...
-  │   └── labels/ 
-  |       ├── 000000.label
-  |       ├── 000001.label
-  |       └── ...
-  ├── 01/ # 00-10 for training
-  ├── 08/ # for validation
-  ├── 11/ # 11-21 for testing
-  └── ...
-```
-
 ## Installation
-Clone this repository in your workspace with
+First, make sure the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) is installed on your system, see [here](https://github.com/NVIDIA/MinkowskiEngine#installation) for more details.
+
+Next, clone our repository
+```bash
+git clone git@github.com:PRBonn/4DMOS && cd 4DMOS
 ```
-git clone https://github.com/PRBonn/4DMOS
+
+and install with
+```bash
+make install
 ```
 
-### With Docker
-We provide a ```Dockerfile``` and a ```docker-compose.yaml``` to run all docker commands with a simple ```Makefile```.
+**or**
+```bash
+make install-all
+```
+if you want to install the project with all optional dependencies (needed for the visualizer). In case you want to edit the Python code, install in editable mode:
+```bash
+make editable
+```
 
-To use it, you need to
-1. [Install Docker](https://docs.docker.com/desktop/linux/install/)
-2. In Ubuntu, install docker-compose with
-
-    ```bash
-    sudo apt-get install docker-compose
-    ```
-    
-    Note that this will install docker-compose v1.25 which is recommended since GPU access during build time using docker-compose v2 is currently an [open issue](https://github.com/docker/compose/issues/9681).
-
-3. Install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
-4. **IMPORTANT** To have GPU access during the build stage, make ```nvidia``` the default runtime in ```/etc/docker/daemon.json```:
-
-    ```yaml
-    {
-        "runtimes": {
-            "nvidia": {
-                "path": "/usr/bin/nvidia-container-runtime",
-                "runtimeArgs": []
-            } 
-        },
-        "default-runtime": "nvidia" 
-    }
-    ```
-    Save the file and run ```sudo systemctl restart docker``` to restart docker.
-
-5. Build the image with all dependendencies with
-
-    ```bash
-    make build
-    ```
-
-Before running the container, you need to set the path to your dataset:
+## How to Use It
+Just type
 
 ```bash
-export DATA=path/to/dataset/sequences
+mos4d_pipeline --help
 ```
+to see how to run 4DMOS.
 
-To test that your container is running propoerly, do
+Check the [Download](#downloads) section for a pre-trained model. Like [KISS-ICP](https://github.com/PRBonn/kiss-icp), our pipeline runs on a variety of point cloud data formats like `bin`, `pcd`, `ply`, `xyz`, `rosbags`, and more. To visualize these, just type 
 
 ```bash
-make test
+mos4d_pipeline --visualize /path/to/weights.ckpt /path/to/data
 ```
 
-Finally, run the container with
+<details>
+<summary>Want to evaluate with ground truth labels?</summary>
+
+Because these labels come in all shapes, you need to specify a dataloader. This is currently available for SemanticKITTI, NuScenes, HeLiMOS, and our labeled KITTI Tracking sequence 19 and Apollo sequences (see [Downloads](#downloads)).
+
+</details>
+
+<details>
+<summary>Want to reproduce the results from the paper?</summary>
+The originally published version of 4DMOS is tagged under version `0.1`. You can just
+```bash
+git checkout v0.1
+```
+
+to use it. The current state of the repository is based on [KISS-ICP](https://github.com/PRBonn/kiss-icp) and [MapMOS](https://github.com/PRBonn/MapMOS), so you can run it on most datasets and do not need to provide poses.
+
+</details>
+
+
+## Training
+To train our approach, you need to first cache your data. To see how to do that, just `cd` into the `4DMOS` repository and type
 
 ```bash
-make run
+python3 scripts/precache.py --help
 ```
 
-You can now work inside the container and run the training and inference scripts.
-
-### Without Docker
-Without Docker, you need to install the dependencies specified in the ```setup.py```. This can be done in editable mode by running
-
+After this, you can run the training script. Again, `--help` shows you how:
 ```bash
-python3 -m pip install --editable .
+python3 scripts/train.py --help
 ```
 
-Now install the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) according to their [installation wiki page](https://github.com/NVIDIA/MinkowskiEngine/wiki/Installation). When installing the MinkowskiEngine, your CUDA version has to match the CUDA version that was used to compile PyTorch.
+<details>
+<summary>Want to verify the cached data?</summary>
 
-## Running the Code
-If not done yet, specify the path to the SemanticKITTI data:
+You can inspect the cached training samples by using the script `python3 scripts/cache_to_ply.py --help`.
 
-```bash
-export DATA=path/to/dataset/sequences
+</details>
+
+<details>
+<summary>Want to change the logging directory?</summary>
+
+The training log and checkpoints will be saved by default to the current working directory. To change that, export the `export LOGS=/your/path/to/logs` environment variable before running the training script.
+
+</details>
+
+## HeLiMOS
+To train on the HeLiMOS data with different sensor configurations, use the following commands:
+
+```shell
+python3 scripts/precache.py /path/to/HeLiMOS helimos /path/to/cache --config config/helimos/*_training.yaml
+python3 scripts/train.py /path/to/HeLiMOS helimos /path/to/cache --config config/helimos/*_training.yaml
 ```
 
-If you use Docker, you now need to run the container with ```make run```.
+by replacing the paths and the config file names. To evaluate for example on the Velodyne test data, run
 
-### Training
-To train a model with the parameters specified in ```config/config.yaml```, run
-
-```bash
-python scripts/train.py
+```shell
+mos4d_pipeline /path/to/weights.ckpt /path/to/HeLiMOS --dataloader helimos -s Velodyne/test.txt
 ```
 
-Find more options like loading weights from a pre-trained model or checkpointing by passing the ```--help``` flag to the command above.
-
-### Inference
-Inference is done in two steps. First, predicting moving object confidence scores and second, fusing multiple confidence values to get a final prediction (non-overlapping strategy or binary Bayes filter.
-
-To infer the per-point confidence scores for a model checkpoint at ```path/to/model.ckpt```, run
-
-```bash
-python scripts/predict_confidences.py -w path/to/model.ckpt
-```
-
-We provide several additional options, see ```--help``` flag. The confidence scores are stored in ```predictions/ID/POSES/confidences``` to distinguish setups using different model IDs and pose files.
-
-Next, the final moving object predictions can be obtained by
-
-```bash
-python scripts/confidences_to_labels.py -p predictions/ID/POSES
-```
-You can use the ```--strategy``` argument to decide between the non-overlapping or bayesian filter strategy from the paper. Run with ```--help``` to see more options. The final predictions are stored in ```predictions/ID/POSES/labels/```.
-
-## Evaluation and Visualization
-We use the [SemanticKITTI API](https://github.com/PRBonn/semantic-kitti-api) to evaluate the intersection-over-union (IOU) of the moving class as well as to visualize the predictions. Clone the repository in your workspace, install the dependencies and then run the following command to visualize your predictions for e.g. sequence 8:
-
-```
-cd semantic-kitti-api
-./visualize_mos.py --sequence 8 --dataset /path/to/dataset --predictions /path/to/4DMOS/predictions/ID/POSES/labels/STRATEGY/
-```
-
-## Benchmark
-To submit the results to the LiDAR-MOS benchmark, please follow the instructions [here](https://competitions.codalab.org/competitions/28894).
-
-## Pretrained Models
+## Downloads
 <p align="center">
     <img src="docs/table.png" width="600">
 </p>
@@ -199,6 +116,25 @@ To submit the results to the LiDAR-MOS benchmark, please follow the instructions
 * [Model [E]: 5 scans input, 1 scan output](https://www.ipb.uni-bonn.de/html/projects/4DMOS/5_scans_single_output.zip)
 * [Model [F]: 2 scans](https://www.ipb.uni-bonn.de/html/projects/4DMOS/2_scans.zip)
 * [Model [G]: 10 scans](https://www.ipb.uni-bonn.de/html/projects/4DMOS/10_scans.zip)
+
+## Publication
+If you use our code in your academic work, please cite the corresponding [paper](https://www.ipb.uni-bonn.de/pdfs/mersch2022ral.pdf):
+
+```bibtex
+@article{mersch2022ral,
+author = {B. Mersch and X. Chen and I. Vizzo and L. Nunes and J. Behley and C. Stachniss},
+title = {{Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions}},
+journal={IEEE Robotics and Automation Letters (RA-L)},
+year = 2022,
+volume = {7},
+number = {3},
+pages = {7503--7510},
+  codeurl = {https://github.com/PRBonn/4DMOS},
+}
+```
+
+## Acknowledgments
+This implementation is heavily inspired by [KISS-ICP](https://github.com/PRBonn/kiss-icp).
 
 ## License
 This project is free software made available under the MIT License. For details see the LICENSE file.
