@@ -9,6 +9,20 @@
 ![example](docs/4dmos.gif)
 *Our moving object segmentation on the unseen SemanticKITTI test sequences 18 and 21. Red points are predicted as moving.*
 
+Please find the corresponding video [here](https://youtu.be/5aWew6caPNQ).
+
+<p align="center">
+    <img src="docs/introduction.png" width="600">
+</p>
+
+*Given a sequence of point clouds, our method segments moving (red) from non-moving (black) points.*
+
+<p align="center">
+    <img src="docs/architecture.png">
+</p>
+
+*We first create a sparse 4D point cloud of all points in a given receding window. We use sparse 4D convolutions from the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) to extract spatio-temporal features and predict per-points moving object scores.*
+
 ## Installation
 First, make sure the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) is installed on your system, see [here](https://github.com/NVIDIA/MinkowskiEngine#installation) for more details.
 
@@ -103,6 +117,17 @@ by replacing the paths and the config file names. To evaluate for example on the
 ```shell
 mos4d_pipeline /path/to/weights.ckpt /path/to/HeLiMOS --dataloader helimos -s Velodyne/test.txt
 ```
+
+## Evaluation and Visualization
+We use the [SemanticKITTI API](https://github.com/PRBonn/semantic-kitti-api) to evaluate the intersection-over-union (IOU) of the moving class as well as to visualize the predictions. Clone the repository in your workspace, install the dependencies and then run the following command to visualize your predictions for e.g. sequence 8:
+
+```
+cd semantic-kitti-api
+./visualize_mos.py --sequence 8 --dataset /path/to/dataset --predictions /path/to/4DMOS/predictions/ID/POSES/labels/STRATEGY/
+```
+
+## Benchmark
+To submit the results to the LiDAR-MOS benchmark, please follow the instructions [here](https://competitions.codalab.org/competitions/28894).
 
 ## Downloads
 <p align="center">
