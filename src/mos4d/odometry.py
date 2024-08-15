@@ -22,12 +22,9 @@
 
 import numpy as np
 from mos4d.config import DataConfig, OdometryConfig
-from typing import Type
 
 from kiss_icp.config import KISSConfig
-from kiss_icp.kiss_icp import KissICP, get_registration
-from mos4d.registration import get_registration
-from mos4d.mapping import VoxelHashMap
+from kiss_icp.kiss_icp import KissICP
 
 
 def parse_config(config_data: DataConfig, config_odometry: OdometryConfig):
@@ -50,13 +47,7 @@ class Odometry(KissICP):
     ):
         kiss_config = parse_config(config_data, config_odometry)
         super().__init__(kiss_config)
-
-        self.local_map = VoxelHashMap(
-            voxel_size=self.config.mapping.voxel_size,
-            max_distance=self.config.data.max_range,
-            max_points_per_voxel=self.config.mapping.max_points_per_voxel,
-        )
-        self.registration = get_registration(kiss_config)
+        self.poses = []
 
     def register_points(self, points, timestamps, scan_index):
         # Apply motion compensation
@@ -87,21 +78,20 @@ class Odometry(KissICP):
 
         # Update step: threshold, local map, delta, and the last pose
         self.adaptive_threshold.update_model_deviation(model_deviation)
-        self.local_map.update(points_downsample, new_pose, scan_index)
+        self.local_map.update(points_downsample, new_pose)
         self.last_delta = np.linalg.inv(self.last_pose) @ new_pose
         self.last_pose = new_pose
 
         points_reg = self.transform(points, self.last_pose)
         return np.asarray(points_reg)
 
-    def get_map_points(self):
-        map_points, map_timestamps = self.local_map.point_cloud_with_timestamps()
-        return map_points.reshape(-1, 3), map_timestamps.reshape(-1, 1)
-
     def transform(self, points, pose):
         points_hom = np.hstack((points, np.ones((len(points), 1))))
         points = (pose @ points_hom.T).T[:, :3]
         return points
+
+    def current_pose(self):
+        return self.last_pose
 
     def current_location(self):
         return self.last_pose[:3, 3]

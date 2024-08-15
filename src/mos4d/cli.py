@@ -46,11 +46,12 @@ app = typer.Typer(add_completion=False, rich_markup_mode="rich")
 
 # Remove from the help those dataloaders we explicitly say how to use
 _available_dl_help = available_dataloaders()
+
 _available_dl_help.remove("generic")
 _available_dl_help.remove("mcap")
 _available_dl_help.remove("ouster")
 _available_dl_help.remove("rosbag")
-_available_dl_help.remove(.datasets.mos4d_dataset")
+_available_dl_help.remove("mos4d_dataset")
 
 docstring = f"""
 Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions\n
