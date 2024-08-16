@@ -31,7 +31,6 @@ from pytorch_lightning import LightningDataModule
 from mos4d.utils.cache import get_cache, memoize
 from mos4d.config import MOS4DConfig, DataConfig, OdometryConfig
 from mos4d.odometry import Odometry
-from mos4d.mapping import VoxelHashMap
 from mos4d.datasets import dataset_factory, sequence_dataloaders
 
 
@@ -148,6 +147,7 @@ class MOS4DDataset(Dataset):
 
         self.sequence = None
         self.odometry = Odometry(self.config.data, self.config.odometry)
+        self.poses = []
 
     def __len__(self):
         return len(self.idx_mapper.keys())
@@ -187,16 +187,17 @@ class MOS4DDataset(Dataset):
             data_config = DataConfig().model_validate(data_config_dict)
             odometry_config = OdometryConfig().model_validate(odometry_config_dict)
 
-            self.odometry = Odometry(data_config, odometry_config)
             self.sequence = sequence
+            self.odometry = Odometry(data_config, odometry_config)
+            self.poses = []
 
         # Register
         self.odometry.register_points(scan_points, timestamps, scan_index)
-        current_pose = self.odometry.current_pose()
+        self.poses.append(self.odometry.last_pose)
 
         # Collect past point clouds
         list_past_points = []
-        n_poses_available = len(self.odometry.poses)
+        n_poses_available = len(self.poses)
         for index in range(0, min(n_poses_available, n_past_scans)):
             past_points, _, past_labels = self.datasets[sequence][scan_index - index]
 
@@ -204,9 +205,9 @@ class MOS4DDataset(Dataset):
             past_labels = past_labels[valid_mask]
             past_points = past_points[valid_mask]
 
-            past_pose = self.odometry.poses[-(index + 1)]
+            past_pose = self.poses[-(index + 1)]
             past_points_transformed = self.odometry.transform(
-                past_points, np.linalg.inv(current_pose) @ past_pose
+                past_points, np.linalg.inv(self.odometry.last_pose) @ past_pose
             )
 
             list_past_points.append(
