@@ -47,7 +47,6 @@ class Odometry(KissICP):
     ):
         kiss_config = parse_config(config_data, config_odometry)
         super().__init__(kiss_config)
-        self.poses = []
 
     def register_points(self, points, timestamps, scan_index):
         # Apply motion compensation

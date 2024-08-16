@@ -63,6 +63,7 @@ class MOS4DPipeline(OdometryPipeline):
         )
         self._first = jump
         self._last = self._first + self._n_scans
+        self.poses = np.zeros((self._n_scans, 4, 4))
 
         # Config and output dir
         self.config = load_config(config)
@@ -86,7 +87,6 @@ class MOS4DPipeline(OdometryPipeline):
 
         # Results
         self.results = MOSPipelineResults()
-        self.poses = self.odometry.poses
         self.has_gt = hasattr(self._dataset, "gt_poses")
         self.gt_poses = self._dataset.gt_poses[self._first : self._last] if self.has_gt else None
         self.dataset_name = self._dataset.__class__.__name__
@@ -99,7 +99,7 @@ class MOS4DPipeline(OdometryPipeline):
 
         self.confusion_matrix_online = torch.zeros(2, 2)
         self.confusion_matrix_receding = torch.zeros(2, 2)
-        self.times_mos = []
+        self.times_mos = np.zeros(self._n_scans)
 
         # Visualizer
         self.visualize = visualize
@@ -131,6 +131,7 @@ class MOS4DPipeline(OdometryPipeline):
         for scan_index in pbar:
             local_scan, timestamps, gt_labels = self._next(scan_index)
             scan_points = self.odometry.register_points(local_scan, timestamps, scan_index)
+            self.poses[scan_index - self._first] = self.odometry.last_pose
 
             self.dict_gt_labels[scan_index] = gt_labels
 
@@ -148,7 +149,7 @@ class MOS4DPipeline(OdometryPipeline):
             past_point_clouds = torch.vstack(list(self.buffer))
             start_time = time.perf_counter_ns()
             pred_logits = self.model.predict(past_point_clouds)
-            self.times_mos.append(time.perf_counter_ns() - start_time)
+            self.times_mos[scan_index - self._first] = time.perf_counter_ns() - start_time
 
             # Detach, move to CPU
             pred_logits = pred_logits.detach().cpu().numpy().astype(np.float64)
