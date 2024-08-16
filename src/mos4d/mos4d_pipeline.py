@@ -175,19 +175,8 @@ class MOS4DPipeline(OdometryPipeline):
             pred_labels = self.model.to_label(pred_logits)
 
             mask_scan = past_point_clouds[:, -1] == scan_index
-            past_point_clouds_global = self.odometry.transform(
-                past_point_clouds[:, 1:4], self.odometry.current_pose()
-            )
             if self.visualize:
-                self.visualizer.update(
-                    scan_points,
-                    past_point_clouds_global[~mask_scan],
-                    pred_labels[mask_scan],
-                    pred_labels[~mask_scan],
-                    pred_labels[mask_scan],
-                    pred_labels[~mask_scan],
-                    self.odometry.current_pose(),
-                )
+                self.visualizer.update(past_point_clouds, pred_labels)
 
             self.confusion_matrix_online += get_confusion_matrix(
                 torch.tensor(pred_labels[mask_scan], dtype=torch.int32),
