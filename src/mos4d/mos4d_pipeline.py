@@ -75,17 +75,12 @@ class MOS4DPipeline(OdometryPipeline):
         state_dict = {k.replace("mos.", ""): v for k, v in state_dict.items()}
         state_dict = {k: v for k, v in state_dict.items() if "MOSLoss" not in k}
 
-        # Change these depending on the 4DMOS model
-        self.prior = 0.25
-        self.max_length = 10
-        self.mos_voxel_size = 0.1
-
-        self.model = MOS4DNet(self.mos_voxel_size)
+        self.model = MOS4DNet(self.config.mos.voxel_size_mos)
         self.model.load_state_dict(state_dict)
         self.model.cuda().eval().freeze()
 
         self.odometry = Odometry(self.config.data, self.config.odometry)
-        self.buffer = deque(maxlen=self.max_length)
+        self.buffer = deque(maxlen=self.config.mos.n_scans)
         self.dict_logits = {}
         self.dict_gt_labels = {}
 
@@ -170,7 +165,7 @@ class MOS4DPipeline(OdometryPipeline):
                     self.dict_logits[past_scan_index] = scan_logits
                 else:
                     self.dict_logits[past_scan_index] += scan_logits
-                    self.dict_logits[past_scan_index] -= prob_to_log_odds(self.prior)
+                    self.dict_logits[past_scan_index] -= prob_to_log_odds(self.config.mos.prior)
 
             pred_labels = self.model.to_label(pred_logits)
 

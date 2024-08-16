@@ -14,10 +14,9 @@ odometry:
 mos:
   voxel_size_mos: 0.1
   delay_mos: 10
+  prior: 0.25
   max_range_mos: 50.0
   min_range_mos: 0.0
-  voxel_size_belief: 0.25
-  max_range_belief: 150
 
 training:
   id: "experiment_id"
