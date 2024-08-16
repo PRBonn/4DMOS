@@ -63,7 +63,6 @@ class MOS4DPipeline(OdometryPipeline):
         )
         self._first = jump
         self._last = self._first + self._n_scans
-        self.poses = np.zeros((self._n_scans, 4, 4))
 
         # Config and output dir
         self.config = load_config(config)
@@ -87,6 +86,7 @@ class MOS4DPipeline(OdometryPipeline):
 
         # Results
         self.results = MOSPipelineResults()
+        self.poses = np.zeros((self._n_scans, 4, 4))
         self.has_gt = hasattr(self._dataset, "gt_poses")
         self.gt_poses = self._dataset.gt_poses[self._first : self._last] if self.has_gt else None
         self.dataset_name = self._dataset.__class__.__name__
