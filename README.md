@@ -23,6 +23,13 @@ Please find the corresponding video [here](https://youtu.be/5aWew6caPNQ).
 
 *We first create a sparse 4D point cloud of all points in a given receding window. We use sparse 4D convolutions from the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) to extract spatio-temporal features and predict per-points moving object scores.*
 
+## Important Update
+The current state of the repository is improved by internally aligning the scans using [KISS-ICP](https://github.com/PRBonn/kiss-icp). Also, the build system and pipeline are inspired from [MapMOS](https://github.com/PRBonn/MapMOS), so you can run it on most point cloud data formats. If you want to reproduce the original results from the paper, this version is tagged under `0.1`. You can checkout by
+
+```bash
+git checkout v0.1
+```
+
 ## Installation
 First, make sure the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) is installed on your system, see [here](https://github.com/NVIDIA/MinkowskiEngine#installation) for more details.
 
@@ -65,18 +72,6 @@ mos4d_pipeline --visualize /path/to/weights.ckpt /path/to/data
 Because these labels come in all shapes, you need to specify a dataloader. This is currently available for SemanticKITTI, NuScenes, HeLiMOS, and our labeled KITTI Tracking sequence 19 and Apollo sequences (see [Downloads](#downloads)).
 
 </details>
-
-<details>
-<summary>Want to reproduce the results from the paper?</summary>
-The originally published version of 4DMOS is tagged under version `0.1`. You can just
-```bash
-git checkout v0.1
-```
-
-to use it. The current state of the repository is based on [KISS-ICP](https://github.com/PRBonn/kiss-icp) and [MapMOS](https://github.com/PRBonn/MapMOS), so you can run it on most datasets and do not need to provide poses.
-
-</details>
-
 
 ## Training
 To train our approach, you need to first cache your data. To see how to do that, just `cd` into the `4DMOS` repository and type
