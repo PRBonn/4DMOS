@@ -76,6 +76,7 @@ class MOS4DDataModule(LightningDataModule):
             shuffle=self.shuffle,
             num_workers=self.config.training.num_workers,
             pin_memory=True,
+            persistent_workers=True,
             drop_last=False,
             timeout=0,
         )
@@ -89,6 +90,7 @@ class MOS4DDataModule(LightningDataModule):
             shuffle=False,
             num_workers=self.config.training.num_workers,
             pin_memory=True,
+            persistent_workers=True,
             drop_last=False,
             timeout=0,
         )
