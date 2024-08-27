@@ -132,13 +132,12 @@ class MOS4DPipeline(OdometryPipeline):
             local_scan, timestamps, gt_labels = self._next(scan_index)
             scan_points = self.odometry.register_points(local_scan, timestamps, scan_index)
             self.poses[scan_index - self._first] = self.odometry.last_pose
-            
 
             min_range_mos = self.config.mos.min_range_mos
             max_range_mos = self.config.mos.max_range_mos
             scan_mask = self._preprocess(scan_points, min_range_mos, max_range_mos)
             scan_points = torch.tensor(scan_points[scan_mask], dtype=torch.float32, device="cuda")
-            gt_labels = gt_labels[scan_mask] 
+            gt_labels = gt_labels[scan_mask]
 
             self.dict_gt_labels[scan_index] = gt_labels
             self.buffer.append(

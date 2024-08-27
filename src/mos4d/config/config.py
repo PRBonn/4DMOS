@@ -45,6 +45,7 @@ class MOSConfig(BaseModel):
     max_range_mos: float = 50.0
     min_range_mos: float = 0.0
 
+
 class TrainingConfig(BaseModel):
     id: str = "experiment_id"
     train: List[str] = Field(

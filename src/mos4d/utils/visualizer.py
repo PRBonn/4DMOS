@@ -37,6 +37,8 @@ QUIT_BUTTON = "QUIT\n  [Q]"
 
 # Colors
 BACKGROUND_COLOR = [0.0, 0.0, 0.0]
+COLOR_START = [27, 45, 72]
+COLOR_END = [104, 130, 168]
 POINT_SIZE = 0.05
 
 
@@ -77,7 +79,7 @@ class MOS4DVisualizer(StubVisualizer):
 
     # Private Interface ---------------------------------------------------------------------------
     def _initialize_visualizer(self):
-        self._ps.set_program_name("MapMOS Visualizer")
+        self._ps.set_program_name("4DMOS Visualizer")
         self._ps.init()
         self._ps.set_ground_plane_mode("none")
         self._ps.set_background_color(BACKGROUND_COLOR)
@@ -88,8 +90,8 @@ class MOS4DVisualizer(StubVisualizer):
     def _update_geometries(self, points, labels):
         steps = points[:, -1] - np.min(points[:, -1])
         colors = np.zeros((len(points), 3))
-        colors = np.array([27, 45, 72]) + (steps / len(np.unique(steps))).reshape(-1, 1) @ np.array(
-            [[104, 130, 168]]
+        colors = np.array(COLOR_START) + (steps / len(np.unique(steps))).reshape(-1, 1) @ np.array(
+            [[COLOR_END]]
         )
         colors /= 256
         colors[labels == 1] = [1, 0, 0]
