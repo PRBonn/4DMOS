@@ -97,7 +97,7 @@ def cache_to_ply(
         if hasattr(data_iterable.dataset.datasets[sequence], "sequence_id")
         else os.path.basename(data_iterable.dataset.datasets[seq].data_dir)
     )
-    path = os.path.join("ply", "4DMOS", dataset_sequence)
+    path = os.path.join("ply", dataset_sequence)
     os.makedirs(path, exist_ok=True)
 
     for idx, batch in enumerate(
