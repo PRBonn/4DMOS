@@ -1,0 +1,8 @@
+training:
+  id: "helimos_omni"
+  train:
+    - "Velodyne/train.txt"
+    - "Ouster/train.txt"
+  val:
+    - "Velodyne/val.txt"
+    - "Ouster/val.txt"

@@ -21,20 +21,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-import torch
-import typer
-from typing import Optional
+from tqdm import tqdm
 from pathlib import Path
-from pytorch_lightning import Trainer
-from pytorch_lightning import loggers as pl_loggers
-from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
+from typing import List, Optional
+import typer
 
-from mos4d.utils.seed import set_seed
 from mos4d.config import load_config
 
 
-def train(
+def precache(
     data: Path = typer.Argument(
         ...,
         help="The data directory used by the specified dataloader",
@@ -50,6 +45,14 @@ def train(
         help="The directory where the cache should be created",
         show_default=False,
     ),
+    sequence: List[str] = typer.Option(
+        None,
+        "--sequence",
+        "-s",
+        show_default=False,
+        help="[Optional] Cache specific sequences",
+        rich_help_panel="Additional Options",
+    ),
     config: Optional[Path] = typer.Option(
         None,
         "--config",
@@ -58,58 +61,34 @@ def train(
         help="[Optional] Path to the configuration file",
     ),
 ):
-    from mos4d.datasets.mos4d_dataset import MOS4DDataModule as DataModule
-    from mos4d.training_module import TrainingModule
-
-    set_seed(66)
+    from torch.utils.data import DataLoader
+    from mos4d.datasets.mos4d_dataset import collate_fn
+    from mos4d.datasets.mos4d_dataset import MOS4DDataset as Dataset
 
     cfg = load_config(config)
-    model = TrainingModule(cfg)
+    sequences = list(sequence) if len(sequence) > 0 else cfg.training.train + cfg.training.val
 
-    # Load data and model
-    dataset = DataModule(
-        dataloader=dataloader,
-        data_dir=data,
-        config=cfg,
-        cache_dir=cache_dir,
+    data_iterable = DataLoader(
+        Dataset(
+            dataloader=dataloader,
+            data_dir=data,
+            config=cfg,
+            sequences=sequences,
+            cache_dir=cache_dir,
+        ),
+        batch_size=1,
+        collate_fn=collate_fn,
+        shuffle=False,
+        num_workers=0,
+        batch_sampler=None,
     )
 
-    # Add callbacks
-    lr_monitor = LearningRateMonitor(logging_interval="step")
-    checkpoint_saver = ModelCheckpoint(
-        monitor="val_moving_iou",
-        filename=cfg.training.id + "_{epoch:03d}_{val_moving_iou:.3f}",
-        mode="max",
-        save_last=True,
-    )
-
-    # Logger
-    environ = os.environ.get("LOGS")
-    prefix = environ if environ is not None else "models"
-    log_dir = os.path.join(prefix, "4DMOS")
-    os.makedirs(log_dir, exist_ok=True)
-    tb_logger = pl_loggers.TensorBoardLogger(
-        log_dir,
-        name=cfg.training.id,
-        default_hp_metric=False,
-    )
-
-    torch.set_float32_matmul_precision("high")
-    # Setup trainer
-    trainer = Trainer(
-        accelerator="gpu",
-        devices=1,
-        logger=tb_logger,
-        max_epochs=cfg.training.max_epochs,
-        callbacks=[
-            lr_monitor,
-            checkpoint_saver,
-        ],
-    )
-
-    # Train!
-    trainer.fit(model, dataset)
+    for _ in tqdm(data_iterable, desc="Caching data", unit=" items", dynamic_ncols=True):
+        pass
 
 
 if __name__ == "__main__":
-    typer.run(train)
+    import torch
+
+    with torch.no_grad():
+        typer.run(precache)

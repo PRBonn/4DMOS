@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+preferred-citation:
+  title: "Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions"
+  doi: "110.1109/LRA.2022.3183245"
+  year: "2022"
+  type: article
+  journal: "IEEE Robotics and Automation Letters (RA-L)"
+  url: https://www.ipb.uni-bonn.de/pdfs/mersch2022ral.pdf
+  codeurl: https://github.com/PRBonn/4DMOS
+  authors:
+    - family-names: Mersch
+      given-names: Benedikt
+    - family-names: Chen
+      given-names: Xieyuanli
+    - family-names: Vizzo
+      given-names: Ignacio
+    - family-names: Nunes
+      given-names: Lucas
+    - family-names: Behley
+      given-names: Jens
+    - family-names: Stachniss
+      given-names: Cyrill

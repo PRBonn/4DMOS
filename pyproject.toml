@@ -1,41 +1,41 @@
+[project]
+name = "mos4d"
+version = "1.0.0"
+description = "Receding Moving Object Segmentation in 3D LiDAR Data Using Sparse 4D Convolutions"
+readme = "README.md"
+authors = [
+    { name = "Benedikt Mersch", email = "benedikt.mersch@gmail.com" },
+]
+dependencies = [
+    "kiss-icp>=1.0.0",
+    "diskcache>=5.3.0",
+    "pytorch_lightning>=1.6.4",
+]
+
+[project.optional-dependencies]
+all = [
+    "PyYAML",
+    "ouster-sdk>=0.7.1",
+    "pyntcloud",
+    "trimesh",
+    "open3d>=0.13",
+]
+
+[project.scripts]
+4dmos_pipeline = "mos4d.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/PRBonn/4DMOS"
+
 [build-system]
-requires = ["setuptools>=42"]
+requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
 line-length = 100
-exclude = '''
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
-    | \.venv
-    | _build
-    | buck-out
-    | build
-    | dist
-    | 3rdparty
-  )/
-)
-'''
 
 [tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-ensure_newline_before_comments = true
-line_length = 100
+profile = "black"
 
 [tool.pylint.format]
 max-line-length = "100"
-
-[tool.pylint.messages_control]
-disable = """,
-    bad-continuation,
-    invalid-name,
-    """
-

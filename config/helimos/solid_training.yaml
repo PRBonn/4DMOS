@@ -1,0 +1,8 @@
+training:
+  id: "helimos_solid"
+  train:
+    - "Avia/train.txt"
+    - "Aeva/train.txt"
+  val:
+    - "Avia/val.txt"
+    - "Aeva/val.txt"

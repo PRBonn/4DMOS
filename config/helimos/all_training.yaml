@@ -1,0 +1,12 @@
+training:
+  id: "helimos_all"
+  train:
+    - "Avia/train.txt"
+    - "Aeva/train.txt"
+    - "Velodyne/train.txt"
+    - "Ouster/train.txt"
+  val:
+    - "Avia/val.txt"
+    - "Aeva/val.txt"
+    - "Velodyne/val.txt"
+    - "Ouster/val.txt"

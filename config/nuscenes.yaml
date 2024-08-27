@@ -1,0 +1,6 @@
+data:
+  max_range: 50.0
+
+mos:
+  max_range_mos: -1.0 # No limit
+  min_range_mos: 3.0

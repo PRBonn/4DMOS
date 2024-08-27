@@ -1,0 +1,43 @@
+# This config shows all parameters that can be passed to the pipeline. If not, the defaults are set in the config.py.
+
+data:
+  deskew: False
+  max_range: 100.0
+  min_range: 3.0
+
+odometry:
+  voxel_size: 0.5
+  max_points_per_voxel: 20
+  initial_threshold: 2.0
+  min_motion_th: 0.1
+
+mos:
+  voxel_size_mos: 0.1
+  delay_mos: 10
+  prior: 0.25
+  max_range_mos: 50.0
+  min_range_mos: 0.0
+
+training:
+  id: "experiment_id"
+  train:
+    - "00"
+    - "01"
+    - "02"
+    - "03"
+    - "04"
+    - "05"
+    - "06"
+    - "07"
+    - "09"
+    - "10"
+  val:
+    - "08"
+  batch_size: 16
+  accumulate_grad_batches:  1
+  max_epochs: 100
+  lr: 0.0001
+  lr_epoch: 1
+  lr_decay: 0.99
+  weight_decay: 0.0001
+  num_workers: 4
