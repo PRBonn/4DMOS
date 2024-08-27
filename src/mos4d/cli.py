@@ -173,7 +173,7 @@ def mos4d_pipeline(
     # Lazy-loading for faster CLI
     from mos4d.datasets import dataset_factory
 
-    from mos4d.mos4d_pipeline import MOS4DPipeline as Pipeline
+    from mos4d.pipeline import MOS4DPipeline as Pipeline
 
     Pipeline(
         dataset=dataset_factory(

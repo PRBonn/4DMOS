@@ -59,7 +59,7 @@ def train(
     ),
 ):
     from mos4d.datasets.mos4d_dataset import MOS4DDataModule as DataModule
-    from mos4d.mos4d_training_module import TrainingModule
+    from mos4d.training_module import TrainingModule
 
     set_seed(66)
 
