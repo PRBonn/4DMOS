@@ -91,7 +91,7 @@ class MOS4DVisualizer(StubVisualizer):
         steps = points[:, -1] - np.min(points[:, -1])
         colors = np.zeros((len(points), 3))
         colors = np.array(COLOR_START) + (steps / len(np.unique(steps))).reshape(-1, 1) @ np.array(
-            [[COLOR_END]]
+            [COLOR_END]
         )
         colors /= 256
         colors[labels == 1] = [1, 0, 0]
