@@ -217,7 +217,7 @@ class MOS4DPipeline(OdometryPipeline):
 
     def _run_evaluation(self):
         if self.has_gt:
-            self.results.eval_odometry(self.odometry.get_poses(), self.gt_poses)
+            self.results.eval_odometry(self.poses, self.gt_poses)
         self.results.eval_mos(self.confusion_matrix_online, desc="Online Prediction")
         self.results.eval_mos(self.confusion_matrix_receding, desc="Receding Horizon Strategy")
         self.results.eval_fps(self.times_mos, desc="Average Frequency 4DMOS")
