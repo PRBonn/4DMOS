@@ -22,7 +22,7 @@ all = [
 ]
 
 [project.scripts]
-4dmos_pipeline = "mos4d.cli:app"
+mos4d_pipeline = "mos4d.cli:app"
 
 [project.urls]
 Homepage = "https://github.com/PRBonn/4DMOS"
