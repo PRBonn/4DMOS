@@ -149,7 +149,7 @@ year = 2022,
 volume = {7},
 number = {3},
 pages = {7503--7510},
-  codeurl = {https://github.com/PRBonn/4DMOS},
+codeurl = {https://github.com/PRBonn/4DMOS},
 }
 ```
 
