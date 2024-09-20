@@ -2,11 +2,12 @@
 # @file      mos4d.py
 # @author    Benedikt Mersch     [mersch@igg.uni-bonn.de]
 # Copyright (c) 2022 Benedikt Mersch, all rights reserved
+import copy
+
+import MinkowskiEngine as ME
+import numpy as np
 import torch
 import torch.nn as nn
-import copy
-import numpy as np
-import MinkowskiEngine as ME
 from pytorch_lightning import LightningModule
 
 from mos4d.minkunet import CustomMinkUNet14

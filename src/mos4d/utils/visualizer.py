@@ -22,8 +22,9 @@
 import datetime
 import importlib
 import os
-import numpy as np
 from abc import ABC
+
+import numpy as np
 
 # Button names
 START_BUTTON = " START\n[SPACE]"

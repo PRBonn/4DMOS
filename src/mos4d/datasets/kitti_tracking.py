@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import numpy as np
+
 from mos4d.datasets.kitti import SemanticKITTIDataset
 
 

@@ -25,6 +25,7 @@ from typing import Optional
 
 import typer
 from kiss_icp.tools.cmd import guess_dataloader
+
 from mos4d.datasets import (
     available_dataloaders,
     jumpable_dataloaders,
@@ -172,7 +173,6 @@ def mos4d_pipeline(
         jump = 0
     # Lazy-loading for faster CLI
     from mos4d.datasets import dataset_factory
-
     from mos4d.pipeline import MOS4DPipeline as Pipeline
 
     Pipeline(
