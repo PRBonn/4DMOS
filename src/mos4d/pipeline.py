@@ -22,22 +22,22 @@
 
 import os
 import time
+from collections import deque
 from pathlib import Path
 from typing import Optional
-from collections import deque
-import torch
+
 import numpy as np
+import torch
+from kiss_icp.pipeline import OdometryPipeline
 from tqdm.auto import trange
 
-from kiss_icp.pipeline import OdometryPipeline
-
+from mos4d.config import load_config
+from mos4d.metrics import get_confusion_matrix
 from mos4d.mos4d import MOS4DNet
 from mos4d.odometry import Odometry
-from mos4d.metrics import get_confusion_matrix
-from mos4d.utils.visualizer import MOS4DVisualizer, StubVisualizer
 from mos4d.utils.pipeline_results import MOSPipelineResults
 from mos4d.utils.save import KITTIWriter, StubWriter
-from mos4d.config import load_config
+from mos4d.utils.visualizer import MOS4DVisualizer, StubVisualizer
 
 
 def prob_to_log_odds(prob):

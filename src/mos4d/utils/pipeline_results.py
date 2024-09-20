@@ -21,15 +21,10 @@
 # SOFTWARE.
 
 import numpy as np
+from kiss_icp.metrics import absolute_trajectory_error, sequence_error
 from kiss_icp.tools.pipeline_results import PipelineResults
-from kiss_icp.metrics import sequence_error, absolute_trajectory_error
-from mos4d.metrics import (
-    get_stats,
-    get_iou,
-    get_recall,
-    get_f1,
-    get_precision,
-)
+
+from mos4d.metrics import get_f1, get_iou, get_precision, get_recall, get_stats
 
 
 class MOSPipelineResults(PipelineResults):

@@ -20,24 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import torch
 import numpy as np
-
+import torch
 from pytorch_lightning import LightningModule
-from mos4d.mos4d import MOS4DNet
+
 from mos4d.config import MOS4DConfig
+from mos4d.metrics import get_confusion_matrix, get_iou, get_precision, get_recall
+from mos4d.mos4d import MOS4DNet
 from mos4d.utils.augmentation import (
-    rotate_point_cloud,
     random_flip_point_cloud,
     random_scale_point_cloud,
     rotate_perturbation_point_cloud,
-)
-
-from mos4d.metrics import (
-    get_confusion_matrix,
-    get_iou,
-    get_precision,
-    get_recall,
+    rotate_point_cloud,
 )
 
 

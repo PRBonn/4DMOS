@@ -25,9 +25,10 @@ import os
 import sys
 from pathlib import Path
 from typing import List
+
+import numpy as np
 from nuscenes.utils.geometry_utils import transform_matrix
 from pyquaternion import Quaternion
-import numpy as np
 
 
 class NuScenesDataset:

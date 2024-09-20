@@ -21,10 +21,10 @@
 # SOFTWARE.
 
 import numpy as np
-from mos4d.config import DataConfig, OdometryConfig
-
 from kiss_icp.config import KISSConfig
 from kiss_icp.kiss_icp import KissICP
+
+from mos4d.config import DataConfig, OdometryConfig
 
 
 def parse_config(config_data: DataConfig, config_odometry: OdometryConfig):

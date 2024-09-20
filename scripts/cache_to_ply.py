@@ -21,19 +21,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-import typer
 import importlib
+import os
+from pathlib import Path
+from typing import List, Optional
 
 import numpy as np
 import torch
-from typing import List, Optional
+import typer
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from pathlib import Path
 
-from mos4d.datasets.mos4d_dataset import MOS4DDataset, collate_fn
 from mos4d.config import load_config
+from mos4d.datasets.mos4d_dataset import MOS4DDataset, collate_fn
 
 
 def cache_to_ply(

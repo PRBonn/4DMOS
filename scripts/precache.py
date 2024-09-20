@@ -21,10 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from tqdm import tqdm
 from pathlib import Path
 from typing import List, Optional
+
 import typer
+from tqdm import tqdm
 
 from mos4d.config import load_config
 
@@ -62,8 +63,9 @@ def precache(
     ),
 ):
     from torch.utils.data import DataLoader
-    from mos4d.datasets.mos4d_dataset import collate_fn
+
     from mos4d.datasets.mos4d_dataset import MOS4DDataset as Dataset
+    from mos4d.datasets.mos4d_dataset import collate_fn
 
     cfg = load_config(config)
     sequences = list(sequence) if len(sequence) > 0 else cfg.training.train + cfg.training.val

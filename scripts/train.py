@@ -22,16 +22,17 @@
 # SOFTWARE.
 
 import os
+from pathlib import Path
+from typing import Optional
+
 import torch
 import typer
-from typing import Optional
-from pathlib import Path
 from pytorch_lightning import Trainer
 from pytorch_lightning import loggers as pl_loggers
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 
-from mos4d.utils.seed import set_seed
 from mos4d.config import load_config
+from mos4d.utils.seed import set_seed
 
 
 def train(

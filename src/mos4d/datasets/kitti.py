@@ -22,6 +22,7 @@
 
 import glob
 import os
+
 import numpy as np
 from kiss_icp.datasets.kitti import KITTIOdometryDataset
 
