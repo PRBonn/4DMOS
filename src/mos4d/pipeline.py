@@ -80,7 +80,7 @@ class MOS4DPipeline(OdometryPipeline):
         self.model.cuda().eval().freeze()
 
         self.odometry = Odometry(self.config.data, self.config.odometry)
-        self.buffer = deque(maxlen=self.config.mos.n_scans)
+        self.buffer = deque(maxlen=self.config.mos.delay_mos)
         self.dict_logits = {}
         self.dict_gt_labels = {}
 

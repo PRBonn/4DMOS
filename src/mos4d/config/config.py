@@ -42,7 +42,6 @@ class MOSConfig(BaseModel):
     voxel_size_mos: float = 0.1
     delay_mos: int = 10
     prior: float = 0.25
-    n_scans: int = 10
     max_range_mos: float = 50.0
     min_range_mos: float = 0.0
 
