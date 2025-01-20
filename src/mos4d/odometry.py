@@ -25,6 +25,7 @@ from kiss_icp.config import KISSConfig
 from kiss_icp.kiss_icp import KissICP
 
 from mos4d.config import DataConfig, OdometryConfig
+from mos4d.pybind import mos4d_pybind
 
 
 def parse_config(config_data: DataConfig, config_odometry: OdometryConfig):
@@ -50,10 +51,7 @@ class Odometry(KissICP):
 
     def register_points(self, points, timestamps, scan_index):
         # Apply motion compensation
-        points = self.compensator.deskew_scan(points, timestamps, self.last_delta)
-
-        # Preprocess the input cloud
-        points_prep = self.preprocess(points)
+        points_prep = self.preprocessor.preprocess(points, timestamps, self.last_delta)
 
         # Voxelize
         source, points_downsample = self.voxelize(points_prep)
@@ -72,6 +70,8 @@ class Odometry(KissICP):
             kernel=sigma / 3,
         )
 
+        point_deskewed = self.deskew(points, timestamps, self.last_delta)
+
         # Compute the difference between the prediction and the actual estimate
         model_deviation = np.linalg.inv(initial_guess) @ new_pose
 
@@ -81,13 +81,25 @@ class Odometry(KissICP):
         self.last_delta = np.linalg.inv(self.last_pose) @ new_pose
         self.last_pose = new_pose
 
-        points_reg = self.transform(points, self.last_pose)
-        return np.asarray(points_reg)
+        return self.transform(point_deskewed, self.last_pose)
 
     def transform(self, points, pose):
         points_hom = np.hstack((points, np.ones((len(points), 1))))
         points = (pose @ points_hom.T).T[:, :3]
         return points
+
+    def deskew(self, points, timestamps, relative_motion):
+        return (
+            np.asarray(
+                mos4d_pybind._deskew(
+                    frame=mos4d_pybind._Vector3dVector(points),
+                    timestamps=timestamps,
+                    relative_motion=relative_motion,
+                )
+            )
+            if self.config.data.deskew
+            else points
+        )
 
     def current_pose(self):
         return self.last_pose

@@ -68,7 +68,7 @@ def precache(
     from mos4d.datasets.mos4d_dataset import collate_fn
 
     cfg = load_config(config)
-    sequences = list(sequence) if len(sequence) > 0 else cfg.training.train + cfg.training.val
+    sequences = list(sequence) if sequence != None else cfg.training.train + cfg.training.val
 
     data_iterable = DataLoader(
         Dataset(

@@ -7,7 +7,7 @@ authors = [
     { name = "Benedikt Mersch", email = "benedikt.mersch@gmail.com" },
 ]
 dependencies = [
-    "kiss-icp>=1.0.0",
+    "kiss-icp>=1.2.0",
     "diskcache>=5.3.0",
     "pytorch_lightning>=1.6.4",
 ]
@@ -28,8 +28,21 @@ mos4d_pipeline = "mos4d.cli:app"
 Homepage = "https://github.com/PRBonn/4DMOS"
 
 [build-system]
-requires = ["setuptools >= 61.0"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "scikit_build_core","pybind11",
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+build-dir = "build"
+cmake.verbose = false
+cmake.minimum-version = "3.16"
+cmake.source-dir = "src/mos4d/pybind/"
+editable.mode = "redirect"
+editable.rebuild = true
+editable.verbose = true
+sdist.exclude = ["pybind/"]
+wheel.install-dir = "mos4d/pybind/"
 
 [tool.black]
 line-length = 100
