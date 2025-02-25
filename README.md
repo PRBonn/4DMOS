@@ -24,7 +24,9 @@ Please find the corresponding video [here](https://youtu.be/5aWew6caPNQ).
 *We first create a sparse 4D point cloud of all points in a given receding window. We use sparse 4D convolutions from the [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine) to extract spatio-temporal features and predict per-points moving object scores.*
 
 ## Important Update
-The current state of the repository is improved by internally aligning the scans using [KISS-ICP](https://github.com/PRBonn/kiss-icp). Also, the build system and pipeline are inspired from [MapMOS](https://github.com/PRBonn/MapMOS), so you can run it on most point cloud data formats. If you want to reproduce the original results from the paper, this version is tagged under `0.1`. You can checkout by
+Please also check out our latest map-based moving object segmentation pipeline [MapMOS](https://github.com/PRBonn/MapMOS).
+
+The current state of the repository is improved by internally aligning the scans using [KISS-ICP](https://github.com/PRBonn/kiss-icp). Also, the build system and pipeline have been updated after the release of our newer method [MapMOS](https://github.com/PRBonn/MapMOS), so you can run it on most point cloud data formats. If you want to reproduce the original results from the paper, this version is tagged under `0.1`. You can checkout by
 
 ```bash
 git checkout v0.1
