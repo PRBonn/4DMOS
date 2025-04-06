@@ -37,22 +37,31 @@ std::vector<Eigen::Vector3d> Deskew(const std::vector<Eigen::Vector3d> &frame,
                                     const std::vector<double> &timestamps,
                                     const Sophus::SE3d &relative_motion) {
     const std::vector<Eigen::Vector3d> &deskewed_frame = [&]() {
-        const auto &omega = relative_motion.log();
-        const Sophus::SE3d &inverse_motion = relative_motion.inverse();
-        std::vector<Eigen::Vector3d> deskewed_frame(frame.size());
-        tbb::parallel_for(
-            // Index Range
-            tbb::blocked_range<size_t>{0, deskewed_frame.size()},
-            // Parallel Compute
-            [&](const tbb::blocked_range<size_t> &r) {
-                for (size_t idx = r.begin(); idx < r.end(); ++idx) {
-                    const auto &point = frame.at(idx);
-                    const auto &stamp = timestamps.at(idx);
-                    const auto pose = inverse_motion * Sophus::SE3d::exp(stamp * omega);
-                    deskewed_frame.at(idx) = pose * point;
-                };
-            });
-        return deskewed_frame;
+        if (timestamps.empty()) {
+            return frame;
+        } else {
+            const auto &[min, max] = std::minmax_element(timestamps.cbegin(), timestamps.cend());
+            const double min_time = *min;
+            const double max_time = *max;
+            const auto normalize = [&](const double t) {
+                return (t - min_time) / (max_time - min_time);
+            };
+            const auto &omega = relative_motion.log();
+            std::vector<Eigen::Vector3d> deskewed_frame(frame.size());
+            tbb::parallel_for(
+                // Index Range
+                tbb::blocked_range<size_t>{0, deskewed_frame.size()},
+                // Parallel Compute
+                [&](const tbb::blocked_range<size_t> &r) {
+                    for (size_t idx = r.begin(); idx < r.end(); ++idx) {
+                        const auto &point = frame.at(idx);
+                        const auto &stamp = normalize(timestamps.at(idx));
+                        const auto pose = Sophus::SE3d::exp((stamp - 1.0) * omega);
+                        deskewed_frame.at(idx) = pose * point;
+                    };
+                });
+            return deskewed_frame;
+        }
     }();
     return deskewed_frame;
 }
