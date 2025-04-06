@@ -6,6 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Benedikt Mersch", email = "benedikt.mersch@gmail.com" },
 ]
+license = { file = "LICENSE" }
 dependencies = [
     "kiss-icp>=1.2.0",
     "diskcache>=5.3.0",
