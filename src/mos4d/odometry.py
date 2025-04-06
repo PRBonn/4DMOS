@@ -70,8 +70,6 @@ class Odometry(KissICP):
             kernel=sigma / 3,
         )
 
-        point_deskewed = self.deskew(points, timestamps, self.last_delta)
-
         # Compute the difference between the prediction and the actual estimate
         model_deviation = np.linalg.inv(initial_guess) @ new_pose
 
@@ -81,7 +79,9 @@ class Odometry(KissICP):
         self.last_delta = np.linalg.inv(self.last_pose) @ new_pose
         self.last_pose = new_pose
 
-        return self.transform(point_deskewed, self.last_pose)
+        points_deskewed = self.deskew(points, timestamps, self.last_delta)
+
+        return self.transform(points_deskewed, self.last_pose)
 
     def transform(self, points, pose):
         points_hom = np.hstack((points, np.ones((len(points), 1))))
