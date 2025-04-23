@@ -52,8 +52,7 @@ class SemanticKITTIDataset(KITTIOdometryDataset):
         self.label_files = sorted(glob.glob(self.label_dir + "*.label"))
 
     def __getitem__(self, idx):
-        points = self.scans(idx)
-        timestamps = np.zeros(len(points))
+        points, timestamps = self.scans(idx)
         labels = (
             self.read_labels(self.label_files[idx])
             if self.label_files
