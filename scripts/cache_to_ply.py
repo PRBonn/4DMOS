@@ -52,7 +52,7 @@ def cache_to_ply(
         help="The directory where the cache should be created",
         show_default=False,
     ),
-    sequence: Optional[str] = typer.Option(
+    sequence: Optional[List[str]] = typer.Option(
         None,
         "--sequence",
         "-s",
@@ -76,7 +76,7 @@ def cache_to_ply(
 
     # Run
     cfg = load_config(config)
-    sequences = list(sequence) if sequence != None else cfg.training.train + cfg.training.val
+    sequences = sequence if sequence != None else cfg.training.train + cfg.training.val
 
     data_iterable = DataLoader(
         MOS4DDataset(
@@ -92,8 +92,9 @@ def cache_to_ply(
         num_workers=0,
         batch_sampler=None,
     )
-    
+
     path = os.path.join("ply")
+    os.makedirs(path, exist_ok=True)
 
     for idx, batch in enumerate(
         tqdm(data_iterable, desc="Writing data to ply", unit=" items", dynamic_ncols=True)

@@ -46,7 +46,7 @@ def precache(
         help="The directory where the cache should be created",
         show_default=False,
     ),
-    sequence: List[str] = typer.Option(
+    sequence: Optional[List[str]] = typer.Option(
         None,
         "--sequence",
         "-s",
@@ -68,7 +68,7 @@ def precache(
     from mos4d.datasets.mos4d_dataset import collate_fn
 
     cfg = load_config(config)
-    sequences = list(sequence) if sequence != None else cfg.training.train + cfg.training.val
+    sequences = sequence if sequence != None else cfg.training.train + cfg.training.val
 
     data_iterable = DataLoader(
         Dataset(
