@@ -84,7 +84,7 @@ class CustomMinkUNet14(nn.Module):
     BLOCK = BasicBlock
     DILATIONS = (1, 1, 1, 1, 1, 1, 1, 1)
     LAYERS = (1, 1, 1, 1, 1, 1, 1, 1)
-    PLANES = (8, 16, 32, 64, 64, 32, 16, 8)
+    PLANES = (8, 8, 16, 16, 16, 8, 8, 8)
     INIT_DIM = 8
     OUT_TENSOR_STRIDE = 1
 
