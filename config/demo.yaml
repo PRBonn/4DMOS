@@ -13,7 +13,7 @@ odometry:
 
 mos:
   voxel_size_mos: 0.1
-  delay_mos: 2
+  delay_mos: 5
   prior: 0.25
   max_range_mos: 50.0
   min_range_mos: 0.0
