@@ -143,13 +143,21 @@ class TrainingModule(LightningModule):
         return [optimizer], [scheduler]
 
     def augmentation(self, batch):
+        batch = self.drop_frames(batch)
         batch = self.crop(batch)
+        batch = self.subsample(batch)
         batch[:, 1:4] = rotate_point_cloud(batch[:, 1:4])
         batch[:, 1:4] = rotate_perturbation_point_cloud(batch[:, 1:4])
         batch[:, 1:4] = random_flip_point_cloud(batch[:, 1:4])
         batch[:, 1:4] = random_scale_point_cloud(batch[:, 1:4])
-        batch = self.subsample(batch)
         return batch
+
+    def drop_frames(self, batch, max_dropout=0.2):
+        timestamps = torch.unique(batch[:, 4])
+        droprate = int(len(timestamps) * torch.rand(1) * max_dropout)
+        drop = timestamps[torch.randperm(len(timestamps))[:droprate]]
+        mask = ~torch.isin(batch[:, 4], drop)
+        return batch[mask]
 
     def crop(self, batch):
         sample_point = batch[np.random.choice(range(len(batch))), 1:4]
