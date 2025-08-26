@@ -93,7 +93,12 @@ def cache_to_ply(
         batch_sampler=None,
     )
 
-    path = os.path.join("ply")
+    dataset_sequence = (
+        data_iterable.dataset.datasets[sequence].sequence_id
+        if hasattr(data_iterable.dataset.datasets[sequence], "sequence_id")
+        else os.path.basename(data_iterable.dataset.datasets[seq].data_dir)
+    )
+    path = os.path.join("ply", dataset_sequence)
     os.makedirs(path, exist_ok=True)
 
     for idx, batch in enumerate(
