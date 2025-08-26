@@ -50,15 +50,14 @@ class SemanticKITTIDataset(KITTIOdometryDataset):
 
         self.label_dir = os.path.join(self.kitti_sequence_dir, "labels/")
         self.label_files = sorted(glob.glob(self.label_dir + "*.label"))
-        
+
         # Account for incomplete label files
         label_map = {os.path.basename(path): path for path in self.label_files}
         if len(self.label_files) != len(self.scan_files):
             self.label_files = [
-                label_map.get(os.path.basename(scan_file).replace('.bin', '.label'), None)
+                label_map.get(os.path.basename(scan_file).replace(".bin", ".label"), None)
                 for scan_file in self.scan_files
             ]
-
 
     def __getitem__(self, idx):
         points, timestamps = self.scans(idx)
